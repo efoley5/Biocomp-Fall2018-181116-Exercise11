@@ -1,0 +1,29 @@
+
+###Exercise 1
+
+sed -i -e '$a\' *.fasta #add newline characters
+cat sporecoat* >allSporecoat.fasta #combines all sporecoat fasta
+#muscle align for sporecoat
+muscle3.8.31_i86linux64 -in gene_sequences/allSporecoat.fasta -out gene_sequenc$
+
+sed -i -e '$a\' *.fasta #add newline chracters
+cat transporter* >allTransporter.fasta #combines all transporter fasta
+#muscle for Transporter
+muscle3.8.31_i86linux64 -in gene_sequences/allTransporter.fasta -out gene_seque$
+
+
+###Exercise 2
+hmmbuild transporterHmmprofile.fasta gene_sequences/allTransporter.fasta.align
+
+for file in proteomes/*.fasta
+
+do
+
+hmmsearch --tblout "$file”.out.txt transporterHmmprofile.fasta $file
+
+echo "$file” >> hits.txt
+
+cat “$file”.out.txt | grep -v "#" | wc -l >> hits.txt
+
+done
+
